@@ -40,7 +40,7 @@ func (p *Product) GetList() ([]*domain.Product, error) {
 }
 
 func (p *Product) Update(id int64, form *domain.Product) error {
-	query := fmt.Sprintf("update %s set name=$1 description=$2 is_active=$3 updated_at=$4 quantity=$5 where id=$6", productsTable)
+	query := fmt.Sprintf("update %s set name=$1, description=$2, is_active=$3, updated_at=$4, quantity=$5 where id=$6", productsTable)
 	_, err := p.db.Exec(query, form.Name, form.Description, form.IsActive, form.UpdatedAt, form.Quantity, id)
 	return err
 }

@@ -18,7 +18,7 @@ import (
 // @Param input body models.Product true "product info"
 // @Success 200 {integer} integer 1
 // @Failure default {object} errorResponse
-// @Router /api/v1/manager/products [post]
+// @Router /api/v1/auth/manager/products [post]
 func (h *Handler) createProduct(c *gin.Context) {
 
 	var input models.Product
@@ -128,7 +128,6 @@ func (h *Handler) updateProduct(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Product ID"
-// @Param input body models.Product true "product info"
 // @Success 200 {string} string "product deleted"
 // @Failure default {object} errorResponse
 // @Router /api/v1/auth/manager/products/{id} [delete]

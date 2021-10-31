@@ -124,6 +124,35 @@ paths:
       summary: Get All Cart
       tags:
       - Cart
+  /api/v1/auth/manager/products:
+    post:
+      consumes:
+      - application/json
+      description: create product
+      operationId: create-product
+      parameters:
+      - description: product info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create product
+      tags:
+      - Product
   /api/v1/auth/manager/products/{id}:
     delete:
       consumes:
@@ -136,12 +165,6 @@ paths:
         name: id
         required: true
         type: integer
-      - description: product info
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/models.Product'
       produces:
       - application/json
       responses:
@@ -380,35 +403,6 @@ paths:
       summary: Delete Product to cart
       tags:
       - Cart
-  /api/v1/manager/products:
-    post:
-      consumes:
-      - application/json
-      description: create product
-      operationId: create-product
-      parameters:
-      - description: product info
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/models.Product'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: integer
-        default:
-          description: ""
-          schema:
-            $ref: '#/definitions/v1.errorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: Create product
-      tags:
-      - Product
   /api/v1/sign-in:
     post:
       consumes:
