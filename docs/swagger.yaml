@@ -1,0 +1,471 @@
+basePath: /
+definitions:
+  domain.Cart:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/domain.CartItem'
+        type: array
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.CartItem:
+    properties:
+      cart_id:
+        type: integer
+      id:
+        type: integer
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  domain.Product:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+      quantity:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.CartItem:
+    properties:
+      product_id:
+        type: integer
+      qty:
+        type: integer
+    required:
+    - product_id
+    - qty
+    type: object
+  models.CreateUser:
+    properties:
+      account:
+        type: string
+      password:
+        type: string
+    required:
+    - account
+    - password
+    type: object
+  models.Product:
+    properties:
+      description:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      quantity:
+        type: integer
+    required:
+    - description
+    - name
+    - quantity
+    type: object
+  v1.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  v1.signInInput:
+    properties:
+      account:
+        type: string
+      password:
+        type: string
+    required:
+    - account
+    - password
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API Server for Eshop Application
+  title: Eshop API
+  version: "1.0"
+paths:
+  /api/v1/auth/manager/carts:
+    get:
+      consumes:
+      - application/json
+      description: get all Cart
+      operationId: get-all-cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Cart'
+            type: array
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Cart
+      tags:
+      - Cart
+  /api/v1/auth/manager/products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete product
+      operationId: Delete-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: product info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: product deleted
+          schema:
+            type: string
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete product
+      tags:
+      - Product
+    put:
+      consumes:
+      - application/json
+      description: Update product
+      operationId: Update-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: product info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: product updated
+          schema:
+            type: string
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update product
+      tags:
+      - Product
+  /api/v1/auth/products:
+    get:
+      consumes:
+      - application/json
+      description: get all Products
+      operationId: get-all-Products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Product'
+            type: array
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Products
+      tags:
+      - Product
+  /api/v1/auth/products/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get Product by id
+      operationId: get-product-by-id
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Product'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Product By Id
+      tags:
+      - Product
+  /api/v1/auth/user/cart:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Cart
+      operationId: delete-Cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: cart deleted
+          schema:
+            type: string
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Cart
+      tags:
+      - Cart
+    get:
+      consumes:
+      - application/json
+      description: get Cart by id
+      operationId: get-cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Cart'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Cart
+      tags:
+      - Cart
+    post:
+      consumes:
+      - application/json
+      description: create cart
+      operationId: create-cart
+      parameters:
+      - description: cart info
+        in: body
+        name: input
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/models.CartItem'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create cart
+      tags:
+      - Cart
+  /api/v1/auth/user/cart/addproduct:
+    post:
+      consumes:
+      - application/json
+      description: Add Product to cart
+      operationId: add-product-to-cart
+      parameters:
+      - description: cart info
+        in: body
+        name: input
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/models.CartItem'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Cart'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add Product to cart
+      tags:
+      - Cart
+  /api/v1/auth/user/cart/deleteproduct/{productId}/{qty}:
+    post:
+      consumes:
+      - application/json
+      description: Delete Product to cart
+      operationId: delete-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: integer
+      - description: quantity to be removed from the cart
+        in: path
+        name: qty
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Cart'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Product to cart
+      tags:
+      - Cart
+  /api/v1/manager/products:
+    post:
+      consumes:
+      - application/json
+      description: create product
+      operationId: create-product
+      parameters:
+      - description: product info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create product
+      tags:
+      - Product
+  /api/v1/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: login
+      operationId: login
+      parameters:
+      - description: credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.signInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+          schema:
+            type: string
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      summary: SignIn
+      tags:
+      - auth
+  /api/v1/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: create account
+      operationId: create-account
+      parameters:
+      - description: account info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errorResponse'
+      summary: SignUp
+      tags:
+      - auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
