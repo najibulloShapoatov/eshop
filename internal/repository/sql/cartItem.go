@@ -18,7 +18,7 @@ func NewCartItem(db *sqlx.DB) *CartItem {
 func (c *CartItem) Create(CartItem *domain.CartItem) (int64, error) {
 	var id int64
 	query := fmt.Sprintf("INSERT INTO %s (cart_id, product_id, quantity) values ($1,$2,$3) RETURNING id", cartItemsTable)
-	row := c.db.QueryRow(query, CartItem.CartID, CartItem.ProductID)
+	row := c.db.QueryRow(query, CartItem.CartID, CartItem.ProductID, CartItem.Quantity)
 	if err := row.Scan(&id); err != nil {
 		return 0, err
 	}
@@ -29,6 +29,13 @@ func (c *CartItem) GetByID(id int64) (*domain.CartItem, error) {
 	query := fmt.Sprintf("select * from %s where id =$1", cartItemsTable)
 	var CartItem domain.CartItem
 	err := c.db.Get(&CartItem, query, id)
+	return &CartItem, err
+}
+
+func (c *CartItem) GetByProductID(cartId int64, productId int64) (*domain.CartItem, error) {
+	query := fmt.Sprintf("select * from %s where product_id =$1 and cart_id=$2", cartItemsTable)
+	var CartItem domain.CartItem
+	err := c.db.Get(&CartItem, query, productId, cartId)
 	return &CartItem, err
 }
 

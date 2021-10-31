@@ -5,6 +5,8 @@ import (
 	"eshop/internal/domain"
 	"eshop/internal/models"
 	"eshop/internal/repository"
+
+	"github.com/sirupsen/logrus"
 )
 
 type CartItemService struct {
@@ -19,7 +21,8 @@ func NewCartItemService(repo repository.CartItem, repoProduct repository.Product
 	}
 }
 
-func (cartItemService *CartItemService) Create(input *models.CartItem) (int64, error) {
+//Save  add or update product from cart
+func (cartItemService *CartItemService) Save(input *models.CartItem) (int64, error) {
 	product, err := cartItemService.repoProduct.GetByID(input.ProductId)
 	if err != nil {
 		return 0, err
@@ -27,20 +30,29 @@ func (cartItemService *CartItemService) Create(input *models.CartItem) (int64, e
 	if product.Quantity < int(input.Quantity) {
 		return 0, errors.New("quantities greater than stock quantities")
 	}
-	CartItem := domain.NewCartItem(input.CartId, input.ProductId, input.Quantity)
-	return cartItemService.repo.Create(CartItem)
+	cartItem, err := cartItemService.repo.GetByProductID(input.CartId, input.ProductId)
+	if err != nil {
+		CartItem := domain.NewCartItem(input.CartId, input.ProductId, input.Quantity)
+		return cartItemService.repo.Create(CartItem)
+	}
+	cartItem.Quantity = input.Quantity
+
+	err = cartItemService.repo.Update(cartItem.ID, cartItem)
+	if err != nil {
+		return 0, err
+	}
+	return cartItem.ID, nil
 }
 
-func (cartItemService *CartItemService) GetByID(id int64) (*domain.CartItem, error) {
-	return cartItemService.repo.GetByID(id)
-}
-
+//Get All itemsfor cart
 func (cartItemService *CartItemService) GetList(id int64) ([]*domain.CartItem, error) {
-	return cartItemService.repo.GetList(id)
-}
+	items, err := cartItemService.repo.GetList(id)
+	if err != nil {
+		return nil, err
+	}
+	for _, item := range items {
+		item.Product, _ = cartItemService.repoProduct.GetByID(item.ProductID)
+	}
 
-
-
-func (cartItemService *CartItemService) Delete(id int64) error {
-	return cartItemService.repo.Delete(id)
+	return items, nil
 }

@@ -26,19 +26,14 @@ type Product interface {
 	Delete(id int64) error
 }
 type Cart interface {
-	Create(int64) (int64, error)
-	GetByID(id int64) (*domain.Cart, error)
 	GetList() ([]*domain.Cart, error)
-	Delete(id int64) error
-	AddProductToCart(userId int64, input []models.CartItem) (*domain.Cart, error)
-	DeleteProductFromCart(userId int64, productId int64, qty int64) (*domain.Cart, error)
+	Get(userId int64) (*domain.Cart, error)
+	SaveProductToCart(userId int64, input []models.CartItem) (*domain.Cart, error)
 }
 
 type CartItem interface {
-	Create(*models.CartItem) (int64, error)
-	GetByID(id int64) (*domain.CartItem, error)
+	Save(*models.CartItem) (int64, error)
 	GetList(cartID int64) ([]*domain.CartItem, error)
-	Delete(id int64) error
 }
 
 type Service struct {

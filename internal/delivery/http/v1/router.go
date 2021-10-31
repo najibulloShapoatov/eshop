@@ -42,10 +42,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		user := authenticated.Group("/user", h.isUser)
 		{
 			user.GET("/cart", h.getCart)
-			user.POST("/cart", h.createCart)
-			user.DELETE("/cart", h.deleteCart)
-			user.POST("/cart/addproduct", h.addProductToCart)
-			user.DELETE("/cart/deleteproduct/:id/:qty", h.deleteProductToCart)
+			user.POST("/cart/product", h.productToCart)
 		}
 	}
 

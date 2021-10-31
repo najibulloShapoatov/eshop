@@ -44,7 +44,7 @@ type Cart interface {
 type CartItem interface {
 	Create(cartItem *domain.CartItem) (int64, error)
 	GetByID(id int64) (*domain.CartItem, error)
+	GetByProductID(id int64, productId int64) (*domain.CartItem, error)
 	GetList(cartID int64) ([]*domain.CartItem, error)
-	Delete(id int64) error
 	Update(id int64, form *domain.CartItem) error
 }
