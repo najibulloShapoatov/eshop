@@ -6,7 +6,6 @@ import (
 	"eshop/internal/models"
 	"eshop/internal/repository"
 
-	"github.com/sirupsen/logrus"
 )
 
 type CartItemService struct {

@@ -1,20 +1,20 @@
 package main
 
 import (
-"eshop/internal/app"
-_ "eshop/docs"
+	_ "eshop/docs"
+	"eshop/internal/app"
 )
 
 const (
 	configFolder = "configs"
-	configName = "main"
+	configName   = "main"
 )
 
 // @title Eshop API
 // @version 1.0
 // @description API Server for Eshop Application
 
-// @host localhost:8000
+// @host localhost:8383
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth

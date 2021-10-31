@@ -21,7 +21,7 @@ import (
 // @version 1.0
 // @description API Server for Eshop Application
 
-// @host localhost:8000
+// @host localhost:8383
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
